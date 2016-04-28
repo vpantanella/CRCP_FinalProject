@@ -1,25 +1,220 @@
 <!DOCTYPE html>
 <html> 
-<head>
-		<title>My Awesome Visualization of Candy</title>
-		<link rel="stylesheet" href="main.css">
-		<meta name ="description" content="Visit here to blow your mind!">
-		<script src="main.js"></script>
+  <head> 
+        <title>The Awesome Visualzation of Nuclear Electronic Energy</title> 
+        <link rel = "stylesheet" href = "main.css">
+		<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 		<style>
-		h1 {
-			style: color: purple;
+		.tooltip {
+			position: absolute;
+			width: 200px;
+			height: auto;
+			padding: 10px;
+			background-color: white;
+			-webkit-border-radius: 10px;
+			-moz-border-radius: 10px;
+			border-radius: 10px;
+			-webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+			-moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+			box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+			pointer-events: none;
+			margin: 0;
+			font-family: sans-serif;
+			font-size: 16px;
+			line-height: : 20px;
 		}
-		</style>
-		<script>
-		alert('hi');
-		</script>
-</head>
-<body>
-<h1 style="color:red;">My Awesome Visualization of Candy</h2>
-<h2>Take a look and don't eat my candy!</h2>
-
-<p>a;lkdf;laknd;lfaks;dl, <a href= "http://neopets.com" title="Cool!">
-	kn;alvjn;ajknsdlkjvna;owurbviabdflajkvndknalknc;ajnsdoaubiufbjn;lkfm;alkcrnia;lsdjfal;kjsdf;lkajsd;flkjas;dlkfja;lkdsjf;laksjdfl;a</p>
-<p><a href="http://neopets.com"><img src="IMAGE LINK"></a></p>
-</body>
+		</style> 
+  </head> 
+    <body> 
+		<p>The Awesome Visualzation of Nuclear Electronic Energy</p>
+		<div style="display: inline-block;
+			width: 1280px;
+			height: 743px;
+			background-color: teal;
+			background: url('http://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Kavraiskiy_VII_projection_SW.jpg/1280px-Kavraiskiy_VII_projection_SW.jpg');"></div>
+        <script>  
+        // Converts from degrees to radians.
+		Math.radians = function(degrees) {
+  			return degrees * Math.PI / 180;
+		};
+		var width = 1280;	
+		var height = 743;
+		var svg = d3.select("body")			
+				    .select("div")
+				    .append("svg")				
+				    .attr("width", width)		
+					.attr("height", height);	
+		var littleframe =d3.select("body")
+				  		   .append("div")
+				  	       .attr("class", "tooltip")
+				  	       .style("opacity",0.0);
+		var dataset;
+		//var i;
+		d3.csv("/Data/Nuclear.csv", function(data) {	
+			var FACTOR = 234.0;
+			//console.log(data);
+			dataset = data;
+			svg.selectAll("circle")
+		   	   .data(dataset)
+		       .enter()
+		       .append("circle")
+		       /*
+		       .attr({
+		       		cx:function(d)
+		       		{
+		       			var xPosition = ((Math.radians(d.Longitude) * 3)/ (2*Math.PI)) * Math.sqrt(Math.PI*Math.PI/3 - Math.radians(d.Latitude)*Math.radians(d.Latitude))*FACTOR;
+		   	   			//console.log(xPosition);
+		   				return xPosition + width/2;
+		       		},
+		       		cy:function(d)
+		       		{
+		       			var yPosition = Math.radians(d.Latitude) * (-1) * FACTOR;
+		   	   			//console.log(yPosition);
+						return yPosition + height/2;
+		       		},
+		       		r:function(d)
+		       		{
+		   	   			//console.log(d.Numbers);
+		   				return d.Numbers/2;
+		       		},
+		       		fill:function(d)
+		       		{
+		       		var API = "http://api.openweathermap.org/data/2.5/weather?lat=" + d.Latitude + "&lon=" + d.Longitude +"&appid=2792a17ddf2a135ed54393fde48584a7";
+					//console.log(API);
+					var temp = d3.json(API,function(json) {
+						//console.log(json);
+		                var fahrenheitTemp = ((json.main.temp)*(9.0/5.0)-459.67);
+		                var colorScaler = d3.scale.linear()
+								            .domain([0,100])
+		                    				.range([0,255]);
+		                var tempColor = colorScaler(json.main.temp);
+		                console.log(tempColor);
+		                return tempColor;
+		            	 });
+					var g = temp/9;
+					var b = (255-temp);
+					return "rgb(" + temp + "," + g + "," + b +")";
+		       		}
+		       });*/
+		       .attr("cx",function(d) {
+		   		var xPosition = ((Math.radians(d.Longitude) * 3)/ (2*Math.PI)) * Math.sqrt(Math.PI*Math.PI/3 - Math.radians(d.Latitude)*Math.radians(d.Latitude))*FACTOR;
+		   	   	//console.log(xPosition);
+		   		return xPosition + width/2;
+		   		})
+		       .attr("cy",function(d){
+		   	   		var yPosition = Math.radians(d.Latitude) * (-1) * FACTOR;
+		   	   		//console.log(yPosition);
+					return yPosition + height/2;
+		  		})
+		       .attr("r",function(d){
+		   	   		//console.log(d.Numbers);
+		   			return d.Numbers/2;
+		  		})
+		       //.attr("fill","orange")
+		       .attr("stroke-width", 2)
+		       .attr("stroke", "black")
+		       .each(function(row, b) {
+		       		var API = "http://api.openweathermap.org/data/2.5/weather?lat=" + row.Latitude + "&lon=" + row.Longitude +"&appid=2792a17ddf2a135ed54393fde48584a7";
+		       		var circle = this;
+		       		d3.json(API, function(json) {
+							//console.log(json);
+							//console.log(json.main.temp);
+		                	var fahrenheitTemp = ((json.main.temp)*(9.0/5.0)-459.67);
+							//console.log(fahrenheitTemp);
+		                	var colorScaler = d3.scale.linear()
+									            .domain([25,90])
+		                	   	 				.range([0,255]);
+		                	var tempColor = colorScaler(fahrenheitTemp);
+		               		//console.log(tempColor);
+		                	//return tempColor;
+		                	var tempatura = Math.round(tempColor);
+		                	var g = Math.round(tempatura/9);
+							var b = Math.round(255-tempatura);
+		                	var color = "rgb(" + tempatura + "," + g + "," + b +")";
+		                	console.log(color);
+		                	console.log(circle);
+		                	d3.select(circle).attr("fill",color);
+		            	});
+		       })
+		       /*
+		       .call(function(d) {
+		       		var result = new Array();
+		       		function foo(i)
+		       		{
+		       			var API = "http://api.openweathermap.org/data/2.5/weather?lat=" + d[0][i].__data__.Latitude + "&lon=" + d[0][i].__data__.Longitude +"&appid=2792a17ddf2a135ed54393fde48584a7";
+						//console.log(API);
+						//console.log(d);
+						d3.json(API, function(json) {
+							//console.log(json);
+							//console.log(json.main.temp);
+		                	var fahrenheitTemp = ((json.main.temp)*(9.0/5.0)-459.67);
+							//console.log(fahrenheitTemp);
+		                	var colorScaler = d3.scale.linear()
+									            .domain([0,100])
+		                	   	 				.range([0,255]);
+		                	var tempColor = colorScaler(fahrenheitTemp);
+		               		//console.log(tempColor);
+		                	//return tempColor;
+		                	var tempatura = Math.round(tempColor);
+		                	var g = Math.round(tempatura/9);
+							var b = Math.round(255-tempatura);
+		                	result[i] = "rgb(" + tempatura + "," + g + "," + b +")";
+		                	console.log(result[i]);
+		            	});
+		            	console.log(result[i]);
+		       		}
+		       		for(i = 0; i < 31; i++) {
+		       			foo(i);
+				  	}
+				  	d.attr("fill",function(key,index)
+		                {	
+		                		//console.log(index);
+		                		//i = i + 1;
+		                		console.log(result[index]);
+		                		return result;
+		                })
+		       })*/
+		       /*
+		       .attr("fill", function(d) {
+		       		var API = "http://api.openweathermap.org/data/2.5/weather?lat=" + d.Latitude + "&lon=" + d.Longitude +"&appid=2792a17ddf2a135ed54393fde48584a7";
+					//console.log(API);
+					var tempatura;
+					d3.json(API, function(json) {
+						//console.log(json);
+						//console.log(json.main.temp);
+		                var fahrenheitTemp = ((json.main.temp)*(9.0/5.0)-459.67);
+						//console.log(fahrenheitTemp);
+		                var colorScaler = d3.scale.linear()
+								            .domain([0,100])
+		                    				.range([0,255]);
+		                var tempColor = colorScaler(fahrenheitTemp);
+		               	//console.log(tempColor);
+		                //return tempColor;
+		                tempatura = Math.round(tempColor);
+		                console.log(tempatura)
+		            	 })
+					console.log(tempatura);
+					//var g = tempatura/9;
+					//var b = (255-tempatura);
+	                //return "rgb(" + tempatura + "," + g + "," + b +")";
+				})*/
+		       .on("mouseover",function(d){
+		   		//console.log("Over!!");
+				/*moving in，changing the text via selection.html() */
+				//var xPosition = ((Math.radians(d.Longitude) * 3)/ (2*Math.PI)) * Math.sqrt(Math.PI*Math.PI/3 - Math.radians(d.Latitude)*Math.radians(d.Latitude))*FACTOR;
+				//var yPosition = Math.radians(d.Latitude) * (-1) * FACTOR;
+				//Update the tooltip position and value
+				littleframe.style("left", /*xPosition*/ (d3.event.pageX) + "px")
+				 		   .style("top", /*yPosition*/(d3.event.pageY) + "px")
+				 		   .style("opacity", 1.0)//Show the tooltip
+				  		   .html(d.CountryName + "<br /> MW: " + d.MW);
+				})
+				.on("mouseout",function(d){
+					//console.log("Out!!");
+					/* when moving out, make the opacity to be zero*/
+					littleframe.style("opacity",0.0);
+				});
+			});
+        </script>
+    </body> 
 </html>

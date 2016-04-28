@@ -1,8 +1,20 @@
 body{
-	background-color: #9999FF;
-	font-family: 'helvetica', sans-serif;
+
+    /*border-top-style: groove;
+    border-right-style: groove;
+    border-bottom-style: groove;
+    border-left-style: groove;
+    border-color: white; */
+	
+	background-color: black;
+
 }
 
 p{
-	font-size: 
+	color: white;
+	text-align: center;
+	font-family: "Ariel Black";
+	font-size: 50px;
+
+
 }
